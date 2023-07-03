@@ -1,4 +1,3 @@
-package Sdmcet.Cse.OOP.CTA;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +25,7 @@ class Forms extends JFrame implements ActionListener {
 	JButton b;
 	Container contentPane;
 	JPanel p, p1;
-	JLabel l, l1, l2, l3, l4, l5;
+	JLabel l, l1, l2, l3, l4, l5, lr1;
 	JTextField t2, t1, t3, t4, t5;
 
 	Forms(String title) {
@@ -89,13 +88,17 @@ class Forms extends JFrame implements ActionListener {
 		p.setBackground(Color.DARK_GRAY);
 		l = new JLabel();
 		l.setFont(new Font("inter", Font.BOLD, 30));
+
+		lr1 = new JLabel();
+		lr1.setFont(new Font("inter", Font.BOLD, 30));
+
 		p.setPreferredSize(new Dimension(500, 500));
 
 		contentPane = this.getContentPane();
 		contentPane.add(p1, BorderLayout.NORTH);
 		contentPane.add(p, BorderLayout.CENTER);
-		contentPane.add(l, BorderLayout.SOUTH);
-		// p.setLayout(new BorderLayout());
+		contentPane.add(l, BorderLayout.WEST);
+		contentPane.add(lr1, BorderLayout.SOUTH);
 
 	}
 
@@ -107,7 +110,7 @@ class Forms extends JFrame implements ActionListener {
 		double IA3 = Double.parseDouble(t3.getText());
 		double CTA = Double.parseDouble(t4.getText());
 		double SEE = Double.parseDouble(t5.getText());
-//		String St = Double.toString(SEE);
+		// String St = Double.toString(SEE);
 		int i;
 		double CIE, Tol;
 		int IA[] = { (int) IA1, (int) IA2, (int) IA3 }; // IA 1,2,,3 => array IA[]
@@ -145,7 +148,7 @@ class Forms extends JFrame implements ActionListener {
 		if (SEE <= 100 && SEE >= 0) {
 			// Empty
 		} // if
-		else{
+		else {
 			try {
 				throw new InternalInputsException();
 			} catch (InternalInputsException iie) {
@@ -154,10 +157,10 @@ class Forms extends JFrame implements ActionListener {
 
 			} // catch
 		} // else
-		
-//		if(St.equalsIgnoreCase("AB")) {
-//			l.setText("Absent");
-//		}
+
+		// if(St.equalsIgnoreCase("AB")) {
+		// l.setText("Absent");
+		// }
 
 		// Calculation for CIE
 		if (IA[0] >= IA[1] && IA[2] >= IA[1]) {
@@ -173,7 +176,7 @@ class Forms extends JFrame implements ActionListener {
 		}
 
 		// Updating the SEE if 38,39 =>> 40||41
-		if (SEE == 38 || SEE == 39) {
+		else if (SEE == 38 || SEE == 39) {
 			SEE = SEE + 2;
 			// empty
 		}
@@ -184,21 +187,36 @@ class Forms extends JFrame implements ActionListener {
 		// Calculation for Total marks and printing the Grade according
 		Tol = CIE + SEE / 2;
 
-		if (Tol >= 90) {
-			l.setText("Grade : S Total=> " + (int)Math.round(Tol));
-		} else if (Tol >= 80) {
-			l.setText("Grade : A Total=> " + (int) Math.round(Tol));
-		} else if (Tol >= 70) {
-			l.setText("Grade : B Total=> " + (int) Math.round(Tol));
-		} else if (Tol >= 60) {
-			l.setText("Grade : C Total=> " + (int) Math.round(Tol));
-		} else if (Tol >= 50) {
-			l.setText("Grade : D Total=> " + (int) Math.round(Tol));
-		} else if (Tol >= 40) {
-			l.setText("Grade : E Total=> " + (int) Math.round(Tol));
-		} else {
-			l.setText("Grade : F Total=> " + (int) Math.round(Tol));
+		int roundedTol = (int) Math.round(Tol);
+		String grade;
+
+		switch (roundedTol / 10) {
+		case 10:
+		case 9:
+			grade = "S";
+			break;
+		case 8:
+			grade = "A";
+			break;
+		case 7:
+			grade = "B";
+			break;
+		case 6:
+			grade = "C";
+			break;
+		case 5:
+			grade = "D";
+			break;
+		case 4:
+			grade = "E";
+			break;
+		default:
+			grade = "F";
+			break;
 		}
+
+		lr1.setText("Grade : " + grade + " Total=> " + roundedTol);
+
 	}// method
 }// class
 
